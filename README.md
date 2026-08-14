@@ -1,5 +1,10 @@
 # dsh-audit-bundle
 
+[![CI](https://github.com/dongsheng123132/dsh-audit-bundle/actions/workflows/check.yml/badge.svg)](https://github.com/dongsheng123132/dsh-audit-bundle/actions/workflows/check.yml)
+[![MIT license](https://img.shields.io/github/license/dongsheng123132/dsh-audit-bundle)](LICENSE)
+[![Node.js 22+](https://img.shields.io/badge/Node.js-%E2%89%A522-339933?logo=nodedotjs&logoColor=white)](package.json)
+[![Awesome DSH Plugins](https://img.shields.io/badge/Awesome_DSH-verified_lab-0969da)](https://github.com/dongsheng123132/awesome-dsh-plugins#2origin-plugin-lab)
+
 Content-addressed audit indexes across independent [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) evidence producers.
 
 This plugin is not an SBOM scanner, signer, audit logger, policy engine or archive. Existing tools already scan dependencies and individual 2Origin plugins already produce release, runtime, recovery, lineage and policy evidence. The missing layer is a small verifier that proves a particular subject/revision has enough pinned evidence from allowed, independent producers to cover declared controls.

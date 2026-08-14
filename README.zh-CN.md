@@ -1,5 +1,10 @@
 # dsh-audit-bundle
 
+[![CI](https://github.com/dongsheng123132/dsh-audit-bundle/actions/workflows/check.yml/badge.svg)](https://github.com/dongsheng123132/dsh-audit-bundle/actions/workflows/check.yml)
+[![MIT 许可证](https://img.shields.io/github/license/dongsheng123132/dsh-audit-bundle)](LICENSE)
+[![Node.js 22+](https://img.shields.io/badge/Node.js-%E2%89%A522-339933?logo=nodedotjs&logoColor=white)](package.json)
+[![Awesome DSH Plugins](https://img.shields.io/badge/Awesome_DSH-%E5%B7%B2%E9%AA%8C%E8%AF%81%E5%AE%9E%E9%AA%8C-0969da)](https://github.com/dongsheng123132/awesome-dsh-plugins/blob/main/README.zh-CN.md#2origin-%E6%8F%92%E4%BB%B6%E5%AE%9E%E9%AA%8C%E5%AE%A4)
+
 跨多个独立 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 证据生产者的内容寻址审计索引。
 
 它不是 SBOM 扫描器、签名器、审计日志、策略执行器或归档器。现有工具负责扫描，各 2Origin 插件负责产生发布、运行、恢复、血缘和策略证据；本插件只证明某个主体/revision 是否拥有足够的固定证据、允许的证据类型和相互独立的生产者来覆盖声明控制项。
