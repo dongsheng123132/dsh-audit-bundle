@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "subject": { "id": "example-service", "revision": "git-abc123" },
+  "status": "verified",
+  "reportSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "bundleId": "example-audit",
+  "subject": { "id": "example-service", "revision": "git-abc123" },
+  "requiredControls": [
+    { "id": "release-integrity", "minEvidence": 1, "minProducers": 1, "allowedTypes": ["release-proof", "policy-proof"] },
+    { "id": "independent-review", "minEvidence": 2, "minProducers": 2, "allowedTypes": ["release-proof", "policy-proof"] }
+  ],
+  "evidence": [
+    { "id": "release-report", "type": "release-proof", "producer": "release-proof", "path": "evidence/release.json", "sha256": "549abbc836a0199bb23d54cfe0b6a009180c9e84171ad11edf882649950f5397", "subjectPointers": { "id": "/subject/id", "revision": "/subject/revision" }, "controls": ["release-integrity", "independent-review"], "assertions": [{ "id": "verified", "pointer": "/status", "expectedValueSha256": "3d50e8dfbd6e9d98d503dbdd371f0896b67b6f98884de6b1bbc711bff2508994" }] },
+    { "id": "policy-report", "type": "policy-proof", "producer": "policy-proof", "path": "evidence/policy.json", "sha256": "de8c9fa3da8fda7a037badd92f997e4c3df0e8fedb201461fdbdda2035575eb7", "subjectPointers": { "id": "/subject/id", "revision": "/subject/revision" }, "controls": ["independent-review"], "assertions": [{ "id": "verified", "pointer": "/status", "expectedValueSha256": "3d50e8dfbd6e9d98d503dbdd371f0896b67b6f98884de6b1bbc711bff2508994" }] }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "dsh-audit-bundle": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["./mcp-server.mjs"]
+    }
+  }
+}
