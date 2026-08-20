@@ -7,6 +7,8 @@
 
 跨多个独立 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 证据生产者的内容寻址审计索引。
 
+0.2 版补齐正式的只验结构证据 Codex MCP、宿主中立的 DSH ToolDefinition、真实 ToolRuntime 调用与 stock Web Loader 回归。包入口只导出 namespace，不捆绑第二套 DSH 运行时。
+
 它不是 SBOM 扫描器、签名器、审计日志、策略执行器或归档器。现有工具负责扫描，各 2Origin 插件负责产生发布、运行、恢复、血缘和策略证据；本插件只证明某个主体/revision 是否拥有足够的固定证据、允许的证据类型和相互独立的生产者来覆盖声明控制项。
 
 Manifest 声明主体、revision、控制项最低证据数、最低独立生产者数、允许类型、每份证据 SHA-256、主体绑定 JSON Pointer 和仅用摘要表达的断言。缺失、陈旧、非法 JSON、主体错配、断言失败、类型不允许、证据不足或独立生产者不足都会失败闭合。
@@ -17,4 +19,4 @@ Manifest 声明主体、revision、控制项最低证据数、最低独立生产
 node bin/dsh-audit-bundle.mjs verify --workspace examples/basic --manifest audit.manifest.json --artifactDir artifacts
 ```
 
-DSH 注册 `dsh_audit_bundle_inspect`、`dsh_audit_bundle_verify`；MCP 注册对应 inspect/verify。GitHub Actions 在 Ubuntu 与 Windows 运行。许可证：MIT。
+DSH 注册 `dsh_audit_bundle_inspect`、`dsh_audit_bundle_verify`，会在 workspace 边界内解引用证据并可写内容寻址索引。MCP 注册对应 inspect/verify，但只接受内联 manifest 与结构化 JSONL receipt（ID、hash、生产者/主体绑定、断言摘要），不读文件、不解引用证据、不执行动作、不写 artifact，并明确报告 `evidenceContentVerification: not-performed`；真实证据正文核验必须走 DSH 或 CLI。GitHub Actions 在 Ubuntu 与 Windows 运行。许可证：MIT。

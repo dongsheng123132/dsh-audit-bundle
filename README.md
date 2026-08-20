@@ -7,6 +7,8 @@
 
 Content-addressed audit indexes across independent [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) evidence producers.
 
+Version 0.2 adds a formal proof-only Codex MCP surface, host-neutral DSH ToolDefinitions, real ToolRuntime calls and a stock Web Loader regression test. The package exposes namespace exports only and does not bundle a second DSH runtime.
+
 This plugin is not an SBOM scanner, signer, audit logger, policy engine or archive. Existing tools already scan dependencies and individual 2Origin plugins already produce release, runtime, recovery, lineage and policy evidence. The missing layer is a small verifier that proves a particular subject/revision has enough pinned evidence from allowed, independent producers to cover declared controls.
 
 ## Contract
@@ -34,7 +36,7 @@ The CLI emits one JSON object. A failed audit verdict exits `2`; invalid usage e
 
 ## DeepSeek Harness and MCP
 
-The DSH bundle registers `dsh_audit_bundle_inspect` and `dsh_audit_bundle_verify`. The companion stdio MCP server registers `audit_bundle_inspect` and `audit_bundle_verify` through `.mcp.json`.
+The DSH bundle registers `dsh_audit_bundle_inspect` and `dsh_audit_bundle_verify`. These workspace-bounded tools dereference pinned evidence and can write the content-addressed index. The companion stdio MCP server registers `audit_bundle_inspect` and `audit_bundle_verify` through `.mcp.json`, but accepts only an inline manifest and structural JSONL receipts containing IDs, hashes, producer/subject bindings and assertion digests. MCP never reads files, dereferences evidence, executes actions or writes artifacts; it reports `evidenceContentVerification: not-performed`. Use DSH or CLI for real evidence-content verification.
 
 ```sh
 dsh plugin --profile audit-bundle add github:dongsheng123132/dsh-audit-bundle#<commit>
@@ -47,8 +49,10 @@ dsh --profile audit-bundle --dump-config
 npm ci
 npm test
 npm run check
+npm run smoke:plugin
 npm run smoke:mcp
 DSH_CHECKOUT=/path/to/built/deepseek-harness npm run smoke:dsh
+DSH_CHECKOUT=/path/to/built/deepseek-harness DSH_HOME=/path/to/isolated-home npm run smoke:web-loader
 python C:/Users/ZhuanZ/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
 ```
 

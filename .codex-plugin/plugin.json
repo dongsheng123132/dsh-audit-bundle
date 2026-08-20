@@ -1,6 +1,6 @@
 {
   "name": "dsh-audit-bundle",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Content-addressed audit indexes across independent DeepSeek Harness evidence producers",
   "author": { "name": "2Origin", "url": "https://github.com/dongsheng123132" },
   "homepage": "https://github.com/dongsheng123132/dsh-audit-bundle#readme",

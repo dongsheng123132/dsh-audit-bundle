@@ -1,10 +1,41 @@
 #!/usr/bin/env node
 import readline from 'node:readline'
-import { inspectAuditBundle, verifyAuditBundle } from './lib/audit-bundle.mjs'
+import { inspectAuditBundleManifestJson, verifyAuditBundleReceiptsJsonl } from './lib/audit-bundle.mjs'
+
+const MAX_LINE_BYTES = 6 * 1024 * 1024
 const tools = [
-  { name: 'audit_bundle_inspect', description: 'Inspect audit bundle subject, controls and evidence identities without evidence bodies.', inputSchema: { type: 'object', required: ['workspaceRoot', 'manifestPath'], properties: { workspaceRoot: { type: 'string' }, manifestPath: { type: 'string' } }, additionalProperties: false } },
-  { name: 'audit_bundle_verify', description: 'Verify pinned multi-producer evidence and write a content-addressed Merkle index.', inputSchema: { type: 'object', required: ['workspaceRoot', 'manifestPath', 'artifactDir'], properties: { workspaceRoot: { type: 'string' }, manifestPath: { type: 'string' }, artifactDir: { type: 'string' } }, additionalProperties: false } }
+  {
+    name: 'audit_bundle_inspect',
+    description: 'Proof-only inspection of an inline audit manifest. No filesystem access, evidence dereference or action execution.',
+    inputSchema: { type: 'object', required: ['manifestJson'], properties: { manifestJson: { type: 'string', description: 'Explicit audit manifest JSON; secret- and raw-output-shaped fields are rejected.' } }, additionalProperties: false }
+  },
+  {
+    name: 'audit_bundle_verify',
+    description: 'Proof-only verification of inline structural evidence receipts against an inline audit manifest. Evidence bodies are not accepted or verified.',
+    inputSchema: { type: 'object', required: ['manifestJson', 'receiptsJsonl'], properties: { manifestJson: { type: 'string' }, receiptsJsonl: { type: 'string', description: 'JSONL receipts containing only evidence IDs, hashes, producer/subject bindings and assertion digests.' } }, additionalProperties: false }
+  }
 ]
-async function call(name, args) { if (name === 'audit_bundle_inspect') return inspectAuditBundle(args); if (name === 'audit_bundle_verify') return verifyAuditBundle(args); throw Object.assign(new Error(`Unknown tool: ${name}`), { code: 'METHOD_NOT_FOUND' }) }
-const send = (value) => process.stdout.write(`${JSON.stringify(value)}\n`); const lines = readline.createInterface({ input: process.stdin, crlfDelay: Infinity })
-for await (const line of lines) { if (!line.trim()) continue; let request; try { request = JSON.parse(line) } catch { continue }; if (request.id === undefined) continue; try { if (request.method === 'initialize') send({ jsonrpc: '2.0', id: request.id, result: { protocolVersion: request.params?.protocolVersion ?? '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'dsh-audit-bundle', version: '0.1.0' } } }); else if (request.method === 'tools/list') send({ jsonrpc: '2.0', id: request.id, result: { tools } }); else if (request.method === 'tools/call') { const result = await call(request.params?.name, request.params?.arguments ?? {}); send({ jsonrpc: '2.0', id: request.id, result: { content: [{ type: 'text', text: JSON.stringify(result) }], structuredContent: result } }) } else send({ jsonrpc: '2.0', id: request.id, error: { code: -32601, message: 'Method not found' } }) } catch (error) { send({ jsonrpc: '2.0', id: request.id, error: { code: -32000, message: error.message, data: { code: error.code ?? 'ERROR' } } }) } }
+
+function call(name, args) {
+  if (name === 'audit_bundle_inspect') return inspectAuditBundleManifestJson(args.manifestJson)
+  if (name === 'audit_bundle_verify') return verifyAuditBundleReceiptsJsonl(args.manifestJson, args.receiptsJsonl)
+  throw Object.assign(new Error(`Unknown tool: ${name}`), { code: 'METHOD_NOT_FOUND' })
+}
+
+const send = (value) => process.stdout.write(`${JSON.stringify(value)}\n`)
+const lines = readline.createInterface({ input: process.stdin, crlfDelay: Infinity })
+for await (const line of lines) {
+  if (!line.trim()) continue
+  if (Buffer.byteLength(line) > MAX_LINE_BYTES) continue
+  let request
+  try { request = JSON.parse(line) } catch { continue }
+  if (request.id === undefined) continue
+  try {
+    if (request.method === 'initialize') send({ jsonrpc: '2.0', id: request.id, result: { protocolVersion: request.params?.protocolVersion ?? '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'dsh-audit-bundle', version: '0.2.0' } } })
+    else if (request.method === 'tools/list') send({ jsonrpc: '2.0', id: request.id, result: { tools } })
+    else if (request.method === 'tools/call') { const result = call(request.params?.name, request.params?.arguments ?? {}); send({ jsonrpc: '2.0', id: request.id, result: { content: [{ type: 'text', text: JSON.stringify(result) }], structuredContent: result } }) }
+    else send({ jsonrpc: '2.0', id: request.id, error: { code: -32601, message: 'Method not found' } })
+  } catch (error) {
+    send({ jsonrpc: '2.0', id: request.id, error: { code: -32000, message: error.message, data: { code: error.code ?? 'ERROR' } } })
+  }
+}
