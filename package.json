@@ -1,16 +1,67 @@
 {
   "name": "dsh-audit-bundle",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Content-addressed audit indexes across independent DeepSeek Harness evidence producers",
   "license": "MIT",
   "type": "module",
   "main": "./index.js",
-  "exports": { ".": "./index.js", "./audit": "./lib/audit-bundle.mjs" },
-  "bin": { "dsh-audit-bundle": "./bin/dsh-audit-bundle.mjs" },
-  "files": [".codex-plugin/", ".mcp.json", "bin/", "cordis.patch.yml", "examples/", "index.js", "lib/", "mcp-server.mjs", "LICENSE", "README.md", "README.zh-CN.md", "SECURITY.md"],
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
-  "scripts": { "test": "node --test test/*.test.mjs", "check": "node scripts/check.mjs", "smoke:plugin": "node test/plugin-smoke.mjs", "smoke:mcp": "node test/mcp-smoke.mjs", "smoke:dsh": "node test/dsh-runtime-smoke.mjs", "smoke:web-loader": "node test/stock-web-loader-smoke.mjs" },
-  "engines": { "node": ">=22" },
-  "repository": { "type": "git", "url": "git+https://github.com/dongsheng123132/dsh-audit-bundle.git" },
-  "keywords": ["deepseek-harness", "dsh", "dsh-plugin", "audit", "evidence", "merkle", "compliance"]
+  "exports": {
+    ".": "./index.js",
+    "./audit": "./lib/audit-bundle.mjs"
+  },
+  "bin": {
+    "dsh-audit-bundle": "./bin/dsh-audit-bundle.mjs"
+  },
+  "files": [
+    ".codex-plugin/",
+    ".mcp.json",
+    "bin/",
+    "cordis.patch.yml",
+    "examples/",
+    "index.js",
+    "lib/",
+    "mcp-server.mjs",
+    "LICENSE",
+    "README.md",
+    "README.zh-CN.md",
+    "SECURITY.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "compatibility": {
+      "dsh": ">=0.1.2-alpha.4",
+      "node": ">=22",
+      "dshReleases": {
+        "0.1.2-alpha.4": "compatible",
+        "0.1.2-alpha.5": "compatible",
+        "0.1.2-rc.1": "compatible"
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node scripts/check.mjs",
+    "smoke:plugin": "node test/plugin-smoke.mjs",
+    "smoke:mcp": "node test/mcp-smoke.mjs",
+    "smoke:dsh": "node test/dsh-runtime-smoke.mjs",
+    "smoke:web-loader": "node test/stock-web-loader-smoke.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dongsheng123132/dsh-audit-bundle.git"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "audit",
+    "evidence",
+    "merkle",
+    "compliance"
+  ]
 }

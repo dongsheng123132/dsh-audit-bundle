@@ -1,12 +1,20 @@
 {
   "name": "dsh-audit-bundle",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Content-addressed audit indexes across independent DeepSeek Harness evidence producers",
-  "author": { "name": "2Origin", "url": "https://github.com/dongsheng123132" },
+  "author": {
+    "name": "2Origin",
+    "url": "https://github.com/dongsheng123132"
+  },
   "homepage": "https://github.com/dongsheng123132/dsh-audit-bundle#readme",
   "repository": "https://github.com/dongsheng123132/dsh-audit-bundle",
   "license": "MIT",
-  "keywords": ["deepseek-harness", "audit", "evidence", "merkle"],
+  "keywords": [
+    "deepseek-harness",
+    "audit",
+    "evidence",
+    "merkle"
+  ],
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "DSH Audit Bundle",
@@ -14,7 +22,12 @@
     "longDescription": "Verify pinned heterogeneous DSH evidence, subject and revision bindings, assertions, control coverage and independent producers, then emit a content-addressed Merkle audit index without copying evidence bodies.",
     "developerName": "2Origin",
     "category": "Developer Tools",
-    "capabilities": ["Read", "Audit"],
-    "defaultPrompt": ["Verify this DSH audit bundle manifest and show coverage gaps."]
+    "capabilities": [
+      "Read",
+      "Audit"
+    ],
+    "defaultPrompt": [
+      "Verify this DSH audit bundle manifest and show coverage gaps."
+    ]
   }
 }
